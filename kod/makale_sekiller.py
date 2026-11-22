@@ -80,6 +80,30 @@ for j, (te, c) in enumerate(TESTLER.items()):
     r["cok-tek_tum"] = float(f.mean())
     r["cok-tek_tum_GA"] = boot(f, tum, 7)
     r["cok-tek_tohum"] = [float((a - b).mean()) for a, b in zip(M["cok"], M["tek"])]
+    # hakem yanıtı: tohum bazında farklar ve zaman pencereleri (ayrı üreteç; yukarıdaki GA'lar değişmez)
+    for k in ("cok", "tek", "sifir"):
+        r[f"{k}-etas_tohum_tum"] = [float((x - E).mean()) for x in M[k]]
+        r[f"{k}-etas_tohum_ilk"] = [float((x - E)[ilk].mean()) for x in M[k]]
+    rng2 = np.random.default_rng(1)
+
+    def boot2(f, mk, bg):
+        f2, bb = f[mk], np.floor((tt[mk] - tt[0]) / bg).astype(int)
+        ub, ters = np.unique(bb, return_inverse=True)
+        top, n_ = np.bincount(ters, weights=f2), np.bincount(ters)
+        sec = rng2.integers(0, len(ub), (N_BOOT, len(ub)))
+        return [float(q) for q in np.quantile(top[sec].sum(1) / n_[sec].sum(1), [.025, .975])]
+
+    pencere = {"once": (gs <= 0, 7), "g0_1": (ilk, 1 / 24), "g1_7": ((gs > 1) & (gs <= 7), 1), "g7_30": ((gs > 7) & (gs <= 30), 1), "g30": (gs > 30, 7)}
+    r["pencere"] = {}
+    for ad, (mk, bg) in pencere.items():
+        r["pencere"][ad] = {"n": int(mk.sum())}
+        for ref, R in [("etas", E), ("kahin", Ek)]:
+            f = ort["cok"] - R
+            r["pencere"][ad][ref] = float(f[mk].mean())
+            r["pencere"][ad][ref + "_GA"] = boot2(f, mk, bg)
+    ai = int(np.where(test == ana)[0][0])
+    r["ana_sok_fark_etas"] = float(ort["cok"][ai] - E[ai])
+    r["ana_sok_haric_tum"] = float(np.delete(ort["cok"] - E, ai).mean())
     say[te] = r
     ax = eks[j]
     ax.plot(gs, np.cumsum(ort["cok"] - E), color="black", lw=1.3, label="Multi-catalog model")

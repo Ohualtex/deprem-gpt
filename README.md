@@ -39,7 +39,8 @@ GPU server and run logs are also omitted.
 | 10 | Location output | `ON_KAYIT_10.md` | `egit3.py`, `etas_uzay.py`, `harita_*.py`, `analiz10.py` |
 | 11 | Hualien 2024 | `ON_KAYIT_11.md` | `indir_isc_tayvan.py`, `hazirla_tw.py`, `analiz11.py` |
 
-`makale_sekiller.py` produces the manuscript figures and the numbers used in the text.
+`makale_sekiller.py` produces the manuscript figures and the numbers used in the text and in Tables S4 and S5 of the
+Supporting Information (written to `makale/sayilar.json`, a copy of which is `sonuclar/makale_sayilar.json`).
 
 ## Data
 
