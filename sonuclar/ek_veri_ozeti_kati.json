@@ -1,0 +1,46 @@
+{
+ "kati": true,
+ "derin_max_km": 70.0,
+ "katalog": {
+  "Japonya_JMA": {
+   "ham_satir": 4250341,
+   "olay": 23139,
+   "mc_on_kayit": 3.0,
+   "mc_kullanilan": 3.0,
+   "yillik_mc_maxc": {
+    "1999": 1.5999999999999999,
+    "2000": 1.2,
+    "2001": 1.2,
+    "2002": 1.2,
+    "2003": 1.2,
+    "2004": 1.2,
+    "2005": 1.2,
+    "2006": 1.2
+   },
+   "ilk": "1999-12-31 19:10:13.510000",
+   "son": "2006-12-31 20:16:26.230000",
+   "m_max_mutlak": 8.0,
+   "sifir_dt": 0,
+   "M6_ustu": 64
+  },
+  "Italya_INGV": {
+   "ham_satir": 24929,
+   "olay": 693,
+   "mc_on_kayit": 2.5,
+   "mc_kullanilan": 2.7,
+   "yillik_mc_maxc": {
+    "2005": 2.7,
+    "2006": 2.7
+   },
+   "ilk": "2005-01-02 02:05:56.990000",
+   "son": "2006-12-29 06:23:31.680000",
+   "m_max_mutlak": 4.7,
+   "sifir_dt": 0,
+   "M6_ustu": 0
+  },
+  "YeniZelanda_GeoNet": {
+   "olay": 0
+  }
+ },
+ "toplam_olay": 23832
+}

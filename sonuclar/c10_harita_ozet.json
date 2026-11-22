@@ -1,0 +1,24 @@
+{
+ "TR": {
+  "gozlenen_kutu_ici": 453,
+  "gozlenen_toplam": 457,
+  "model_beklenen_kutu_ici": 834.1788888888889,
+  "etas_beklenen_kutu_ici": 224.64999999999998,
+  "model_hucre_poisson_ll": -303.7776590100728,
+  "etas_hucre_poisson_ll": -246.74542294657917,
+  "hucre_km": 10.0,
+  "model_senaryo": 900,
+  "etas_senaryo": 900
+ },
+ "JP": {
+  "gozlenen_kutu_ici": 240,
+  "gozlenen_toplam": 249,
+  "model_beklenen_kutu_ici": 239.00333333333333,
+  "etas_beklenen_kutu_ici": 213.57666666666668,
+  "model_hucre_poisson_ll": 243.15409920472464,
+  "etas_hucre_poisson_ll": 152.97142265940712,
+  "hucre_km": 10.0,
+  "model_senaryo": 900,
+  "etas_senaryo": 900
+ }
+}
