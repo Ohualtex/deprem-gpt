@@ -107,6 +107,7 @@ plt.rcParams.update({
     "xtick.direction": "in", "ytick.direction": "in", "xtick.top": True, "ytick.right": True,
     "axes.grid": False, "savefig.dpi": 300})
 KOYU = "#404040"
+MAVI, MAVI_ACIK, MACENTA, MACENTA_ACIK, TURUNCU, KIRMIZI = "#1f3fcf", "#b9c6f2", "#d61fd0", "#f7c2f3", "#ef8f3a", "#e0342b"
 fig, eks = plt.subplots(2, 2, figsize=(9, 4.6), sharey=True)
 y = np.arange(4)[::-1]
 for i, te in enumerate(TEST):
@@ -116,9 +117,9 @@ for i, te in enumerate(TEST):
             r = ozet["fark"][f"{te}|{var}|{ad}"]
             lo, hi = r["GA"]
             anl = lo > 0 or hi < 0
-            ax.barh(yy, r["eksi_A0"], height=0.6, color=KOYU if anl else "white", edgecolor="black", hatch=None if anl else "////")
+            ax.barh(yy, r["eksi_A0"], height=0.6, color=MAVI if anl else "white", edgecolor="black" if anl else MAVI, hatch=None if anl else "////")
             ax.errorbar(r["eksi_A0"], yy, xerr=[[r["eksi_A0"] - lo], [hi - r["eksi_A0"]]], color="black", capsize=3, lw=1)
-        ax.axvline(0, color="black", lw=0.8)
+        ax.axvline(0, color=KIRMIZI, lw=1.0, ls="--")
         ax.set_title(f"({'abcd'[2 * i + j]}) {TEST[te]['ad']}, {bas}", fontsize=10)
         ax.set_yticks(y)
         ax.set_yticklabels([f"{v}: {ACIK[v]}" for v in VAR[1:]], fontsize=8)

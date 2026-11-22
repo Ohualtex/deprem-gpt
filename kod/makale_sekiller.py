@@ -23,6 +23,11 @@ plt.rcParams.update({
     "xtick.direction": "in", "ytick.direction": "in", "xtick.top": True, "ytick.right": True,
     "axes.grid": False, "savefig.dpi": 300})
 KOYU, ORTA = "#404040", "#8c8c8c"
+# Renkli palet: model mavi, ETAS macenta, tek katalog turuncu, gözlem siyah, referans çizgisi kırmızı kesikli
+MAVI, MAVI_ACIK = "#1f3fcf", "#b9c6f2"
+MACENTA, MACENTA_ACIK = "#d61fd0", "#f7c2f3"
+TURUNCU = "#ef8f3a"
+KIRMIZI = "#e0342b"
 
 TESTLER = {
     "TR": dict(ad="Kahramanmaraş 2023", npz="turkiye.npz", cok="c3_T1", tek="c3_T0", sifir="c3_T2",
@@ -106,10 +111,11 @@ for j, (te, c) in enumerate(TESTLER.items()):
     r["ana_sok_haric_tum"] = float(np.delete(ort["cok"] - E, ai).mean())
     say[te] = r
     ax = eks[j]
-    ax.plot(gs, np.cumsum(ort["cok"] - E), color="black", lw=1.3, label="Multi-catalog model")
-    ax.plot(gs, np.cumsum(ort["tek"] - E), color=ORTA, lw=1.2, label="Single-catalog model")
-    ax.plot(gs, np.cumsum(ort["cok"] - Ek), color=KOYU, lw=1.1, ls="--", label="Multi-catalog model vs. oracle ETAS")
-    ax.axhline(0, color="black", lw=0.6)
+    ax.plot(gs, np.cumsum(ort["cok"] - E), color=MAVI, lw=1.5, label="Multi-catalog model")
+    ax.plot(gs, np.cumsum(ort["tek"] - E), color=TURUNCU, lw=1.4, label="Single-catalog model")
+    ax.plot(gs, np.cumsum(ort["cok"] - Ek), color=MACENTA, lw=1.3, ls="--", label="Multi-catalog model vs. oracle ETAS")
+    ax.axhline(0, color=KIRMIZI, lw=1.0, ls="--")
+    ax.axvline(0, color="black", lw=0.6, ls=":")
     ax.set_xscale("symlog", linthresh=1.0)
     ax.set_xlim(gs[0] - 0.01, gs[-1] * 1.05)
     ax.set_xlabel(f"Days since the {c['ana']} mainshock")
@@ -137,11 +143,11 @@ mk = (saat > 0) & (saat <= 48)
 o = np.argsort(saat[mk])
 x = saat[mk][o]
 ax.step(x, np.arange(1, len(x) + 1), where="post", color="black", lw=1.6, label="Observed")
-for lab, L, st in [("ETAS (subcritical, fitted before 2023)", E5["E2_Lam"], dict(color=ORTA, ls="--")),
-                   ("ETAS (oracle, fitted on test year)", E5["E4_Lam"], dict(color=ORTA, ls=":")),
-                   ("Single-catalog model", H["T0"], dict(color=KOYU, ls="-.")),
-                   ("Multi-catalog model", H["T1"], dict(color=KOYU, ls="-"))]:
-    ax.plot(x, np.cumsum(L[mk][o]), lw=1.1, label=lab, **st)
+for lab, L, st in [("ETAS (subcritical, fitted before 2023)", E5["E2_Lam"], dict(color=MACENTA, ls="-")),
+                   ("ETAS (oracle, fitted on test year)", E5["E4_Lam"], dict(color=MACENTA, ls="--")),
+                   ("Single-catalog model", H["T0"], dict(color=TURUNCU, ls="-")),
+                   ("Multi-catalog model", H["T1"], dict(color=MAVI, ls="-"))]:
+    ax.plot(x, np.cumsum(L[mk][o]), lw=1.4, label=lab, **st)
 ax.set_xlim(0, 48)
 ax.set_xlabel("Hours since the M7.8 mainshock")
 ax.set_ylabel("Cumulative number of M ≥ 3.0 events")
@@ -150,11 +156,11 @@ ax = eks[1]
 A = c5["aralik"]
 et = [r["aralik"] for r in A]
 xs = np.arange(len(A))
-for k, (kod, de) in enumerate([("E2", dict(facecolor="white", hatch="////")), ("E4", dict(facecolor="white", hatch="....")),
-                               ("T0", dict(facecolor=ORTA)), ("T1", dict(facecolor=KOYU))]):
-    ax.bar(xs + (k - 1.5) * 0.2, [r[f"{kod}_ort_Lambda"] for r in A], width=0.2, edgecolor="black", lw=0.6,
+for k, (kod, de) in enumerate([("E2", dict(facecolor=MACENTA)), ("E4", dict(facecolor=MACENTA_ACIK)),
+                               ("T0", dict(facecolor=TURUNCU)), ("T1", dict(facecolor=MAVI))]):
+    ax.bar(xs + (k - 1.5) * 0.2, [r[f"{kod}_ort_Lambda"] for r in A], width=0.2, edgecolor="black", lw=0.5,
            label={"E2": "ETAS subcritical", "E4": "ETAS oracle", "T0": "Single-catalog", "T1": "Multi-catalog"}[kod], **de)
-ax.axhline(1, color="black", lw=0.8)
+ax.axhline(1, color=KIRMIZI, lw=1.0, ls="--")
 ax.set_ylim(0, 1.95)
 ax.legend(loc="upper center", ncol=2, frameon=False, fontsize=7.5)
 ax.set_xticks(xs)
@@ -177,8 +183,8 @@ fig = plt.figure(figsize=(10, 6.2))
 gsx = fig.add_gridspec(2, 4, height_ratios=[1, 1.05])
 for j, (te, ad) in enumerate([(te, ad) for te in ("TR", "JP") for ad in ("M4", "M5")]):
     ax = fig.add_subplot(gsx[0, j])
-    ax.plot([0, 1], [0, 1], color=ORTA, lw=0.8, ls=":")
-    for kim, st in [("model", dict(color="black", marker="o", ls="-")), ("etas", dict(color=KOYU, marker="s", ls="--", mfc="white"))]:
+    ax.plot([0, 1], [0, 1], color=KIRMIZI, lw=1.0, ls="--")
+    for kim, st in [("model", dict(color=MAVI, marker="o", ls="-")), ("etas", dict(color=MACENTA, marker="s", ls="--", mfc="white"))]:
         rr = [q for q in c9["kalibrasyon"][f"{te}|{ad}"] if q["kim"] == kim]
         ax.plot([q["ort_p"] for q in rr], [q["gozlenen"] for q in rr], ms=4, lw=1,
                 label="Multi-catalog model" if kim == "model" else "ETAS", **st)
@@ -192,9 +198,9 @@ for j, te in enumerate(("TR", "JP")):
     ax = fig.add_subplot(gsx[1, 2 * j:2 * j + 2])
     r = c9["ana_sok_sonrasi"][te]
     x = np.array(r["saat"])
-    ax.fill_between(x, [q[0] for q in r["model_olay_P05_P95"]], [q[1] for q in r["model_olay_P05_P95"]], color=ORTA, alpha=0.35, lw=0, label="Model 5–95% range")
-    ax.plot(x, r["model_beklenen_olay"], color="black", marker="o", ms=3, lw=1.2, label="Model expected count")
-    ax.plot(x, r["etas_beklenen_olay"], color=KOYU, marker="s", ms=3, lw=1.2, ls="--", mfc="white", label="ETAS expected count")
+    ax.fill_between(x, [q[0] for q in r["model_olay_P05_P95"]], [q[1] for q in r["model_olay_P05_P95"]], color=MAVI_ACIK, alpha=0.7, lw=0, label="Model 5–95% range")
+    ax.plot(x, r["model_beklenen_olay"], color=MAVI, marker="o", ms=3, lw=1.2, label="Model expected count")
+    ax.plot(x, r["etas_beklenen_olay"], color=MACENTA, marker="s", ms=3, lw=1.2, ls="--", mfc="white", label="ETAS expected count")
     ax.plot(x, r["gozlenen_olay"], color="black", ls="none", marker="x", ms=5, label="Observed count")
     ax.set_yscale("log")
     ax.set_xlabel(f"Issue time, hours after the {'M7.8' if te == 'TR' else 'M7.6'} mainshock")

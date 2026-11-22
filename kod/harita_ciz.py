@@ -57,7 +57,7 @@ for i, (te, c) in enumerate(AYAR.items()):
     vmax = max(Hm.max(), He.max())
     for j, (H, ad) in enumerate([(Hm, "Model S2"), (He, "Spatial ETAS")]):
         ax = eks[i, j]
-        im = ax.pcolormesh(kenar[1], kenar[0], np.where(H > 0, H, np.nan), cmap="Greys", norm=LogNorm(vmin=1e-2, vmax=vmax), shading="flat")
+        im = ax.pcolormesh(kenar[1], kenar[0], np.where(H > 0, H, np.nan), cmap="RdPu", norm=LogNorm(vmin=1e-2, vmax=vmax), shading="flat")
         ax.scatter(o_lon, o_lat, s=4, facecolors="none", edgecolors="black", linewidths=0.4)
         ax.set_xlim(lo1, lo2)
         ax.set_ylim(la1, la2)

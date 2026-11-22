@@ -134,6 +134,7 @@ plt.rcParams.update({
     "xtick.direction": "in", "ytick.direction": "in", "xtick.top": True, "ytick.right": True,
     "axes.grid": False, "savefig.dpi": 300})
 KOYU, ORTA = "#404040", "#8c8c8c"
+MAVI, MAVI_ACIK, MACENTA, MACENTA_ACIK, TURUNCU, KIRMIZI = "#1f3fcf", "#b9c6f2", "#d61fd0", "#f7c2f3", "#ef8f3a", "#e0342b"
 liste = [k for k in ETAS_TUM if k in etas]
 paneller = [("tum_test", "Full test year (2024)"), ("noto_1g", "First day after Noto M7.6"), ("30g_sonrasi", "Later than 30 d")]
 fig, eks = plt.subplots(1, 3, figsize=(10.5, 3.0), sharey=True)
@@ -143,9 +144,9 @@ for j, (ax, (ad, bas)) in enumerate(zip(eks, paneller)):
         x = ozet["kiyas"][f"J1-{k}|{ad}"]
         lo, hi = x["GA"][:2]
         anl = lo > 0 or hi < 0
-        ax.barh(yy, x["ort"], height=0.6, color=KOYU if anl else "white", edgecolor="black", hatch=None if anl else "////")
+        ax.barh(yy, x["ort"], height=0.6, color=MAVI if anl else "white", edgecolor="black" if anl else MAVI, hatch=None if anl else "////")
         ax.errorbar(x["ort"], yy, xerr=[[x["ort"] - lo], [hi - x["ort"]]], color="black", capsize=3, lw=1)
-    ax.axvline(0, color="black", lw=0.8)
+    ax.axvline(0, color=KIRMIZI, lw=1.0, ls="--")
     ax.set_title(f"({'abc'[j]}) {bas}", fontsize=10)
     ax.set_yticks(y)
     ax.set_yticklabels([f"{k}: {ETAS_ACIK[k]}" for k in liste], fontsize=8)
@@ -156,14 +157,14 @@ for uz in ("png", "pdf"):
 plt.close(fig)
 
 fig, ax = plt.subplots(figsize=(7, 3.4))
-stil = {"J0": dict(color=ORTA, ls="-"), "J1": dict(color="black", ls="-"), "J2": dict(color=KOYU, ls="--")}
+stil = {"J0": dict(color=TURUNCU, ls="-"), "J1": dict(color=MAVI, ls="-"), "J2": dict(color=KOYU, ls="--")}
 for k, st in stil.items():
     ax.plot(gun_sonra, np.cumsum(np.mean(mod[k], 0) - etas[en_guclu]), lw=1.2, label=f"{k}: {ACIK[k]}", **st)
 for i, et, yon in [(ana, "Noto M7.6", "left"), (hy, "Hyuganada M7.1", "right")]:
     xg = t[i] - t[ana]
     ax.axvline(xg, color=ORTA, lw=0.6, ls=":")
     ax.text(xg, 0.97, f" {et} " , va="top", ha=yon, fontsize=8, transform=ax.get_xaxis_transform())
-ax.axhline(0, color="black", lw=0.6)
+ax.axhline(0, color=KIRMIZI, lw=1.0, ls="--")
 ax.set_xscale("symlog", linthresh=1.0)
 ax.set_xlim(gun_sonra[0] - 0.01, gun_sonra[-1] * 1.05)
 ax.set_xlabel("Days since the Noto M7.6 mainshock")

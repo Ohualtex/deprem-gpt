@@ -139,6 +139,7 @@ plt.rcParams.update({
     "xtick.direction": "in", "ytick.direction": "in", "xtick.top": True, "ytick.right": True,
     "axes.grid": False, "savefig.dpi": 300})
 KOYU = "#404040"
+MAVI, MAVI_ACIK, MACENTA, MACENTA_ACIK, TURUNCU, KIRMIZI = "#1f3fcf", "#b9c6f2", "#d61fd0", "#f7c2f3", "#ef8f3a", "#e0342b"
 paneller = [("tum_test", "Full test year"), ("dizi_30g", "Sequence box, first 30 d"), ("30g_sonrasi", "Later than 30 d")]
 fig, eks = plt.subplots(1, 3, figsize=(10, 2.8), sharey=True)
 y = np.arange(len(ETAS_TR))[::-1]
@@ -147,9 +148,9 @@ for j, (ax, (ad, bas)) in enumerate(zip(eks, paneller)):
         x = ozet["kiyas"][f"T1-{k}|{ad}"]
         lo, hi = x["GA"][:2]
         anl = lo > 0 or hi < 0
-        ax.barh(yy, x["ort"], height=0.6, color=KOYU if anl else "white", edgecolor="black", hatch=None if anl else "////")
+        ax.barh(yy, x["ort"], height=0.6, color=MAVI if anl else "white", edgecolor="black" if anl else MAVI, hatch=None if anl else "////")
         ax.errorbar(x["ort"], yy, xerr=[[x["ort"] - lo], [hi - x["ort"]]], color="black", capsize=3, lw=1)
-    ax.axvline(0, color="black", lw=0.8)
+    ax.axvline(0, color=KIRMIZI, lw=1.0, ls="--")
     ax.set_title(f"({'abc'[j]}) {bas}", fontsize=10)
     ax.set_yticks(y)
     ax.set_yticklabels([f"{k}: {ACIK[k]}" for k in ETAS_TR], fontsize=8)

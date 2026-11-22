@@ -108,6 +108,7 @@ plt.rcParams.update({
     "xtick.direction": "in", "ytick.direction": "in", "xtick.top": True, "ytick.right": True,
     "axes.grid": False, "savefig.dpi": 300})
 KOYU, ORTA = "#404040", "#8c8c8c"
+MAVI, MAVI_ACIK, MACENTA, MACENTA_ACIK, TURUNCU, KIRMIZI = "#1f3fcf", "#b9c6f2", "#d61fd0", "#f7c2f3", "#ef8f3a", "#e0342b"
 fig, eks = plt.subplots(1, 3, figsize=(11, 3.4))
 
 ax = eks[0]
@@ -116,10 +117,10 @@ mk = (saat > 0) & (saat <= sinir)
 o = np.argsort(saat[mk])
 x = saat[mk][o]
 ax.step(x, np.arange(1, len(x) + 1), where="post", color="black", lw=1.6, label="Observed (M ≥ 3.0)")
-stil = {"E2": dict(color=ORTA, ls="--", label="ETAS E2 (subcritical)"), "E4": dict(color=ORTA, ls=":", label="ETAS E4 (oracle)"),
-        "T0": dict(color=KOYU, ls="-.", label="T0 (Turkey only)"), "T1": dict(color=KOYU, ls="-", label="T1 (Turkey + others)")}
+stil = {"E2": dict(color=MACENTA, ls="-", label="ETAS E2 (subcritical)"), "E4": dict(color=MACENTA, ls="--", label="ETAS E4 (oracle)"),
+        "T0": dict(color=TURUNCU, ls="-", label="T0 (Turkey only)"), "T1": dict(color=MAVI, ls="-", label="T1 (Turkey + others)")}
 for kk, st in stil.items():
-    ax.plot(x, np.cumsum(kaynak[kk][1][mk][o]), lw=1.1, **st)
+    ax.plot(x, np.cumsum(kaynak[kk][1][mk][o]), lw=1.4, **st)
 ax.axvline(SAAT_M76, color=ORTA, lw=0.6, ls=":")
 ax.text(SAAT_M76, 0.97, " M7.6", va="top", ha="left", fontsize=8, transform=ax.get_xaxis_transform())
 ax.set_xlim(0, sinir)
@@ -129,12 +130,12 @@ ax.set_title("(a) Observed vs. expected count", fontsize=10)
 
 xs = np.arange(len(A))
 w = 0.2
-desen = {"E2": dict(facecolor="white", hatch="////"), "E4": dict(facecolor="white", hatch="...."),
-         "T0": dict(facecolor=ORTA, hatch=None), "T1": dict(facecolor=KOYU, hatch=None)}
+desen = {"E2": dict(facecolor=MACENTA, hatch=None), "E4": dict(facecolor=MACENTA_ACIK, hatch=None),
+         "T0": dict(facecolor=TURUNCU, hatch=None), "T1": dict(facecolor=MAVI, hatch=None)}
 ax = eks[1]
 for j, kk in enumerate(["E2", "E4", "T0", "T1"]):
     ax.bar(xs + (j - 1.5) * w, [r[f"{kk}_ort_Lambda"] for r in A], width=w, edgecolor="black", lw=0.6, **desen[kk])
-ax.axhline(1, color="black", lw=0.8)
+ax.axhline(1, color=KIRMIZI, lw=1.0, ls="--")
 ax.set_xticks(xs)
 ax.set_xticklabels(ETIKET, rotation=45, ha="right", fontsize=8)
 ax.set_ylabel("Mean rescaled residual Λ")
@@ -143,7 +144,7 @@ ax.set_title("(b) Rate calibration (ideal = 1)", fontsize=10)
 ax = eks[2]
 for j, kk in enumerate(["T0", "T1"]):
     ax.bar(xs + (j - 0.5) * 0.3, [r[f"{kk}-GR_mll"] for r in A], width=0.3, edgecolor="black", lw=0.6, **desen[kk])
-ax.axhline(0, color="black", lw=0.8)
+ax.axhline(0, color=KIRMIZI, lw=1.0, ls="--")
 ax.set_xticks(xs)
 ax.set_xticklabels(ETIKET, rotation=45, ha="right", fontsize=8)
 ax.set_ylabel("Magnitude log-likelihood minus GR (nats)")
