@@ -49,6 +49,7 @@ def etas_dosya(te, kod):
 
 
 say = {}
+SV = {}   # şekillerin çizildiği sayılar (sonuclar/sekil_verisi.npz)
 fig, eks = plt.subplots(1, len(TESTLER), figsize=(3.6 * len(TESTLER), 3.3), sharey=False)
 eks = np.atleast_1d(eks)
 for j, (te, c) in enumerate(TESTLER.items()):
@@ -110,9 +111,12 @@ for j, (te, c) in enumerate(TESTLER.items()):
     r["ana_sok_fark_etas"] = float(ort["cok"][ai] - E[ai])
     r["ana_sok_haric_tum"] = float(np.delete(ort["cok"] - E, ai).mean())
     say[te] = r
+    SV[f"F1_{te}_gun"] = gs
+    for k_, R_ in [("cok_etas", ort["cok"] - E), ("tek_etas", ort["tek"] - E), ("cok_kahin", ort["cok"] - Ek)]:
+        SV[f"F1_{te}_{k_}_kumulatif"] = np.cumsum(R_)
     ax = eks[j]
     ax.plot(gs, np.cumsum(ort["cok"] - E), color=MAVI, lw=1.5, label="Multi-catalog model")
-    ax.plot(gs, np.cumsum(ort["tek"] - E), color=TURUNCU, lw=1.4, label="Single-catalog model")
+    ax.plot(gs, np.cumsum(ort["tek"] - E), color=TURUNCU, lw=1.4, ls="-.", label="Single-catalog model")
     ax.plot(gs, np.cumsum(ort["cok"] - Ek), color=MACENTA, lw=1.3, ls="--", label="Multi-catalog model vs. oracle ETAS")
     ax.axhline(0, color=KIRMIZI, lw=1.0, ls="--")
     ax.axvline(0, color="black", lw=0.6, ls=":")
@@ -145,9 +149,13 @@ x = saat[mk][o]
 ax.step(x, np.arange(1, len(x) + 1), where="post", color="black", lw=1.6, label="Observed")
 for lab, L, st in [("ETAS (subcritical, fitted before 2023)", E5["E2_Lam"], dict(color=MACENTA, ls="-")),
                    ("ETAS (oracle, fitted on test year)", E5["E4_Lam"], dict(color=MACENTA, ls="--")),
-                   ("Single-catalog model", H["T0"], dict(color=TURUNCU, ls="-")),
+                   ("Single-catalog model", H["T0"], dict(color=TURUNCU, ls="-.")),
                    ("Multi-catalog model", H["T1"], dict(color=MAVI, ls="-"))]:
     ax.plot(x, np.cumsum(L[mk][o]), lw=1.4, label=lab, **st)
+    SV["F2a_" + {"ETAS (subcritical, fitted before 2023)": "etas_altkritik", "ETAS (oracle, fitted on test year)": "etas_kahin",
+                 "Single-catalog model": "tek", "Multi-catalog model": "cok"}[lab] + "_beklenen"] = np.cumsum(L[mk][o])
+SV["F2a_saat"] = x
+SV["F2a_gozlenen"] = np.arange(1, len(x) + 1)
 ax.set_xlim(0, 48)
 ax.set_xlabel("Hours since the M7.8 mainshock")
 ax.set_ylabel("Cumulative number of M ≥ 3.0 events")
@@ -156,7 +164,7 @@ ax = eks[1]
 A = c5["aralik"]
 et = [r["aralik"] for r in A]
 xs = np.arange(len(A))
-for k, (kod, de) in enumerate([("E2", dict(facecolor=MACENTA)), ("E4", dict(facecolor=MACENTA_ACIK)),
+for k, (kod, de) in enumerate([("E2", dict(facecolor=MACENTA, hatch="////")), ("E4", dict(facecolor=MACENTA_ACIK, hatch="....")),
                                ("T0", dict(facecolor=TURUNCU)), ("T1", dict(facecolor=MAVI))]):
     ax.bar(xs + (k - 1.5) * 0.2, [r[f"{kod}_ort_Lambda"] for r in A], width=0.2, edgecolor="black", lw=0.5,
            label={"E2": "ETAS subcritical", "E4": "ETAS oracle", "T0": "Single-catalog", "T1": "Multi-catalog"}[kod], **de)
@@ -217,4 +225,5 @@ plt.close(fig)
 say["olasilik"] = {"skor": c9["skor"], "fark": c9["fark"], "karar": c9["karar"],
                    "kapsama": {te: {"model": r["model_kapsama"], "etas": r["etas_kapsama"]} for te, r in c9["ana_sok_sonrasi"].items()}}
 json.dump(say, open(KOK / "makale/sayilar.json", "w"), indent=1, ensure_ascii=False)
+np.savez_compressed(KOK / "makale/sekil_verisi.npz", **SV)
 print(json.dumps({k: {q: w for q, w in v_.items() if not isinstance(w, list)} for k, v_ in say.items() if k in TESTLER}, indent=1, ensure_ascii=False))

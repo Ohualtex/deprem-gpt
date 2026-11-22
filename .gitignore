@@ -5,3 +5,4 @@ veri/
 *.npz
 *.pt
 kayitlar/
+!sonuclar/sekil_verisi.npz

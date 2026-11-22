@@ -41,6 +41,8 @@ GPU server and run logs are also omitted.
 
 `makale_sekiller.py` produces the manuscript figures and the numbers used in the text and in Tables S4 and S5 of the
 Supporting Information (written to `makale/sayilar.json`, a copy of which is `sonuclar/makale_sayilar.json`).
+The plotted values of Figures 1 and 2a are in `sonuclar/sekil_verisi.npz`. Figure 2b uses `sonuclar/c5_ozet.json`
+and Figure 3 uses `sonuclar/c9_ozet.json`.
 
 ## Data
 

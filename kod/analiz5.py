@@ -118,7 +118,7 @@ o = np.argsort(saat[mk])
 x = saat[mk][o]
 ax.step(x, np.arange(1, len(x) + 1), where="post", color="black", lw=1.6, label="Observed (M ≥ 3.0)")
 stil = {"E2": dict(color=MACENTA, ls="-", label="ETAS E2 (subcritical)"), "E4": dict(color=MACENTA, ls="--", label="ETAS E4 (oracle)"),
-        "T0": dict(color=TURUNCU, ls="-", label="T0 (Turkey only)"), "T1": dict(color=MAVI, ls="-", label="T1 (Turkey + others)")}
+        "T0": dict(color=TURUNCU, ls="-.", label="T0 (Turkey only)"), "T1": dict(color=MAVI, ls="-", label="T1 (Turkey + others)")}
 for kk, st in stil.items():
     ax.plot(x, np.cumsum(kaynak[kk][1][mk][o]), lw=1.4, **st)
 ax.axvline(SAAT_M76, color=ORTA, lw=0.6, ls=":")
@@ -130,7 +130,7 @@ ax.set_title("(a) Observed vs. expected count", fontsize=10)
 
 xs = np.arange(len(A))
 w = 0.2
-desen = {"E2": dict(facecolor=MACENTA, hatch=None), "E4": dict(facecolor=MACENTA_ACIK, hatch=None),
+desen = {"E2": dict(facecolor=MACENTA, hatch="////"), "E4": dict(facecolor=MACENTA_ACIK, hatch="...."),
          "T0": dict(facecolor=TURUNCU, hatch=None), "T1": dict(facecolor=MAVI, hatch=None)}
 ax = eks[1]
 for j, kk in enumerate(["E2", "E4", "T0", "T1"]):
