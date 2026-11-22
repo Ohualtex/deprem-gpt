@@ -1,0 +1,12 @@
+{
+  "title": "Deprem GPT: code, pre-registrations and results for a transformer point process trained on several earthquake catalogs",
+  "upload_type": "software",
+  "description": "<p>Code, pre-registrations, result summaries and figures for the study <i>A transformer trained on several earthquake catalogs outperforms ETAS after large earthquakes</i> (Yıldırım, submitted to Geophysical Research Letters). A small decoder-only transformer treats each earthquake as a token and forecasts the time, magnitude and location of the next event. It is compared with regionally fitted ETAS models in pre-registered prospective tests on the 2023 Kahramanmaraş, 2024 Noto and 2024 Hualien sequences. Raw catalogs and model weights are not included. The scripts download or rebuild them.</p>",
+  "creators": [
+    {"name": "Yıldırım, Özal", "affiliation": "Fırat University"}
+  ],
+  "license": "MIT",
+  "access_right": "open",
+  "keywords": ["earthquake forecasting", "ETAS", "transformer", "temporal point process", "aftershocks", "pre-registration"],
+  "language": "eng"
+}
